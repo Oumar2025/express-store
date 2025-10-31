@@ -227,3 +227,125 @@ app.listen(PORT, () => {
     console.log(`🛍️  Store server running on http://localhost:${PORT}`);
     console.log(`📊 API available at http://localhost:${PORT}/api`);
 });
+
+// Add this after your existing API routes and before app.listen()
+
+// Search products API
+app.get('/api/products/search', (req, res) => {
+    const { q } = req.query;
+    const products = readJSONFile('products.json');
+
+    if (!q) {
+        return res.json({
+            success: true,
+            data: products,
+            count: products.length
+        });
+    }
+
+    const filteredProducts = products.filter(product =>
+        product.name.toLowerCase().includes(q.toLowerCase()) ||
+        product.description.toLowerCase().includes(q.toLowerCase()) ||
+        product.category.toLowerCase().includes(q.toLowerCase())
+    );
+
+    res.json({
+        success: true,
+        data: filteredProducts,
+        count: filteredProducts.length,
+        searchQuery: q
+    });
+});
+
+// Shopping cart API (in-memory storage)
+let carts = {}; // Simple in-memory cart storage
+
+app.post('/api/cart/:userId/add', (req, res) => {
+    const { userId } = req.params;
+    const { productId, quantity = 1 } = req.body;
+
+    if (!carts[userId]) carts[userId] = [];
+
+    const existingItem = carts[userId].find(item => item.productId === parseInt(productId));
+    if (existingItem) {
+        existingItem.quantity += parseInt(quantity);
+    } else {
+        carts[userId].push({
+            productId: parseInt(productId),
+            quantity: parseInt(quantity)
+        });
+    }
+
+    res.json({
+        success: true,
+        message: 'Product added to cart',
+        cart: carts[userId]
+    });
+});
+
+app.get('/api/cart/:userId', (req, res) => {
+    const { userId } = req.params;
+    res.json({
+        success: true,
+        cart: carts[userId] || []
+    });
+});
+
+// Enhanced order creation with validation
+app.post('/api/orders', (req, res) => {
+    const { userId, products } = req.body;
+    const orders = readJSONFile('orders.json');
+    const allProducts = readJSONFile('products.json');
+
+    // Validate products exist
+    let total = 0;
+    const orderItems = [];
+
+    for (const item of products) {
+        const product = allProducts.find(p => p.id === parseInt(item.productId));
+        if (!product) {
+            return res.status(400).json({
+                success: false,
+                message: `Product with ID ${item.productId} not found`
+            });
+        }
+        if (product.stock < item.quantity) {
+            return res.status(400).json({
+                success: false,
+                message: `Not enough stock for ${product.name}`
+            });
+        }
+
+        total += product.price * item.quantity;
+        orderItems.push({
+            productId: product.id,
+            name: product.name,
+            price: product.price,
+            quantity: item.quantity
+        });
+    }
+
+    const newOrder = {
+        id: orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1,
+        userId: parseInt(userId),
+        products: orderItems,
+        total: parseFloat(total.toFixed(2)),
+        status: 'pending',
+        createdAt: new Date().toISOString()
+    };
+
+    orders.push(newOrder);
+
+    if (writeJSONFile('orders.json', orders)) {
+        res.status(201).json({
+            success: true,
+            message: 'Order created successfully',
+            data: newOrder
+        });
+    } else {
+        res.status(500).json({
+            success: false,
+            message: 'Failed to create order'
+        });
+    }
+});

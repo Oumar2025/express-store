@@ -1,12 +1,33 @@
 [
-    {
-      "id": 1,
-      "userId": 1,
-      "products": [
-        {"productId": 1, "quantity": 1},
-        {"productId": 3, "quantity": 2}
-      ],
-      "total": 1299.97,
-      "status": "completed"
-    }
-  ]
+  {
+    "id": 1,
+    "userId": 1,
+    "products": [
+      {
+        "productId": 1,
+        "quantity": 1
+      },
+      {
+        "productId": 3,
+        "quantity": 2
+      }
+    ],
+    "total": 1299.97,
+    "status": "completed"
+  },
+  {
+    "id": 2,
+    "userId": 1,
+    "products": [
+      {
+        "productId": 1,
+        "name": "Laptop",
+        "price": 899.99,
+        "quantity": 1
+      }
+    ],
+    "total": 899.99,
+    "status": "pending",
+    "createdAt": "2025-10-31T10:17:25.174Z"
+  }
+]

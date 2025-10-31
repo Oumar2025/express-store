@@ -11,3 +11,9 @@ block content
         p.category= product.category
         p= product.description
         p.stock In stock: #{product.stock}
+
+// Add this above the products grid
+.search-box
+  form(action="/products/search" method="GET")
+    input(type="text" name="q" placeholder="Search products...")
+    button(type="submit") Search        
