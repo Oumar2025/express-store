@@ -222,14 +222,6 @@ app.delete('/api/product/:id', (req, res) => {
     }
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`🛍️  Store server running on http://localhost:${PORT}`);
-    console.log(`📊 API available at http://localhost:${PORT}/api`);
-});
-
-// Add this after your existing API routes and before app.listen()
-
 // Search products API
 app.get('/api/products/search', (req, res) => {
     const { q } = req.query;
@@ -348,4 +340,11 @@ app.post('/api/orders', (req, res) => {
             message: 'Failed to create order'
         });
     }
+});
+
+// Start server
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🛍️  Store server running on http://localhost:${PORT}`);
+    console.log(`📊 API available at http://localhost:${PORT}/api`);
+    console.log(`🌐 Network access: http://192.168.1.101:${PORT}`);
 });
