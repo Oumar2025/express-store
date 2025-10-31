@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h2= title
+  .products-grid
+    each product in products
+      .product-card
+        h3 
+          a(href='/product/' + product.id)= product.name
+        p.price $#{product.price}
+        p.category= product.category
+        p= product.description
+        p.stock In stock: #{product.stock}

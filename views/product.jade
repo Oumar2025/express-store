@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .product-detail
+    h2= product.name
+    .product-info
+      p.price Price: $#{product.price}
+      p.category Category: #{product.category}
+      p.stock Available: #{product.stock} units
+      p.description= product.description
+    .actions
+      a.button(href='/products') Back to Products
+      a.api-link(href='/api/product/' + product.id) View JSON API

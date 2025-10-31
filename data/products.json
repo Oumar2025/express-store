@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "Laptop",
+    "price": 899.99,
+    "category": "Electronics",
+    "description": "High-performance laptop for work and gaming",
+    "stock": 10
+  },
+  {
+    "id": 3,
+    "name": "Headphones",
+    "price": 149.99,
+    "category": "Electronics",
+    "description": "Wireless noise-cancelling headphones",
+    "stock": 30
+  },
+  {
+    "id": 4,
+    "name": "Tablet",
+    "price": 399.99,
+    "category": "Electronics",
+    "description": "10-inch tablet with stylus",
+    "stock": 20
+  },
+  {
+    "id": 5,
+    "name": "Tablet",
+    "price": 399.99,
+    "category": "Electronics",
+    "description": "10-inch tablet with stylus",
+    "stock": 20
+  }
+]

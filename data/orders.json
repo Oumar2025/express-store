@@ -1,0 +1,12 @@
+[
+    {
+      "id": 1,
+      "userId": 1,
+      "products": [
+        {"productId": 1, "quantity": 1},
+        {"productId": 3, "quantity": 2}
+      ],
+      "total": 1299.97,
+      "status": "completed"
+    }
+  ]
